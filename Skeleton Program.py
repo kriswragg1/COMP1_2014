@@ -4,7 +4,7 @@
 # developed in the Python 3.2 programming environment
 # version 2 edited 06/03/2014
 
-######test change#############
+#hello
 
 import random
 
@@ -135,9 +135,20 @@ def GetPlayerName():
   return PlayerName
 
 def GetChoiceFromUser():
-  Choice = input('Do you think the next card will be higher than the last card (enter y or n)? ')
+  valid = False
+  Choice = input('Do you think the next card will be higher than the last card (enter y or n)? ').lower()
+  while not valid:
+    if Choice == "y":
+      valid = True
+    elif Choice == "yes":
+      valid = True
+    elif Choice == "n":
+      valid = True
+    elif Choice == "no":
+      valid = True
+    else:
+      "please enter a valid choice"
   return Choice
-
 def DisplayEndOfGameMessage(Score):
   print()
   print('GAME OVER!')
