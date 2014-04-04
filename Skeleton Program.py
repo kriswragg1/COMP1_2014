@@ -147,10 +147,30 @@ def IsNextCardHigher(LastCard, NextCard):
   return Higher
 
 def GetPlayerName():
-  print()
-  PlayerName = input('Please enter your name: ')
-  print()
-  return PlayerName
+  valid = False
+  while not valid:
+    AddScore = input("would you like your score to be added?")
+    if AddScore == "y":
+      valid = True
+      print()
+      PlayerName = input('Please enter your name: ').lower()
+      print()
+      return PlayerName
+    elif AddScore == "yes":
+      valid = True
+      print()
+      PlayerName = input('Please enter your name: ').lower()
+      print()
+      return PlayerName
+    elif AddScore == "n":
+      valid = True
+    elif AddScore == "no":
+      valid = True
+    else:
+      print("please enter a valid choice")
+
+
+   
 
 def GetChoiceFromUser():
   valid = False
