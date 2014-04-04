@@ -1,3 +1,4 @@
+
 # Skeleton Program code for the AQA COMP1 Summer 2014 examination
 # this code should be used in conjunction with the Preliminary Material
 # written by the AQA Programmer Team
@@ -75,11 +76,28 @@ def DisplayMenu():
   print('3. Display recent scores')
   print('4. Reset recent scores')
   print()
-  print('Select an option from the menu (or enter q to quit): ', end='')
+
 
 def GetMenuChoice():
-  Choice = input()
-  print()
+  valid = False
+  while not valid:
+    Choice = input('Select an option from the menu (or enter q to quit): ').lower()
+    print()
+    if Choice == "q":
+      valid = True
+    elif Choice == "quit":
+      Choice = "q"
+      valid = True
+    elif Choice == "1":
+      valid = True
+    elif Choice =="2":
+      valid = True
+    elif Choice == "3":
+      valid = True
+    elif Choice == "4":
+      valid = True
+    else:
+        "please enter a valid choice"
   return Choice
 
 def LoadDeck(Deck):
@@ -136,18 +154,18 @@ def GetPlayerName():
 
 def GetChoiceFromUser():
   valid = False
-  Choice = input('Do you think the next card will be higher than the last card (enter y or n)? ').lower()
   while not valid:
+    Choice = input('Do you think the next card will be higher than the last card (enter y or n)? ').lower()
     if Choice == "y":
       valid = True
     elif Choice == "yes":
-      valid = True
+     valid = True
     elif Choice == "n":
       valid = True
     elif Choice == "no":
       valid = True
     else:
-      "please enter a valid choice"
+        "please enter a valid choice"
   return Choice
 def DisplayEndOfGameMessage(Score):
   print()
