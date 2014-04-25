@@ -261,6 +261,36 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
+def DisplayOptions():
+  print()
+  print("1. Set Ace rank")
+  print()
+def GetOptionsChoice():
+   valid = False
+   while not valid:
+     OptionsChoice = int(input())
+     valid = True
+     else:
+       print('please input a valid option')
+       print()
+    return OptionsChoice
+def SetOptions(OptionChoice):
+
+def SetAceHighOrLow():
+    global Ace
+    finished = False
+    while not finished:
+        Choice = input("would you like the Ace to be high or low?").lower()
+        Choice = Choice[0]
+        if Choice = "h":
+             Ace = "high"
+             finished = True
+        elif Choice = "l":
+             Ace = "low"
+             finished = True
+        else:
+             print("please input a valid answer")
+    
 if __name__ == '__main__':
   for Count in range(1, 53):
     Deck.append(TCard())
@@ -281,3 +311,8 @@ if __name__ == '__main__':
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
+    elif Choice == "5":
+      DisplayOptions()
+      GetOptionChoice()
+      SetOptions(OptionChoice)
+      SetAceHighOrLow()
