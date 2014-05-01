@@ -8,6 +8,7 @@
 #hello
 import datetime
 import random
+import pickle
 
 NO_OF_RECENT_SCORES = 3
 
@@ -28,7 +29,7 @@ Choice = ''
 
 def GetRank(RankNo):
   Rank = ''
-  if RankNo == 1:
+  if RankNo == 1 or RankNo == 14:
     Rank = 'Ace'
   elif RankNo == 2:
     Rank = 'Two'
@@ -76,6 +77,8 @@ def DisplayMenu():
   print('2. Play game (without shuffle)')
   print('3. Display recent scores')
   print('4. Reset recent scores')
+  print('5. options')
+  print('6. Save scores')
   print()
 
 
@@ -97,11 +100,20 @@ def GetMenuChoice():
       valid = True
     elif Choice == "4":
       valid = True
+    elif Choice == "5":
+      valid = True
+    elif Choice == "6":
+      valid = True
+    elif Choice == "7":
+      valid = True
+    elif Choice == "8":
+      valid = True
     else:
         "please enter a valid choice"
   return Choice
 
 def LoadDeck(Deck):
+  global Ace
   CurrentFile = open('deck.txt', 'r')
   Count = 1
   while True:
@@ -112,6 +124,8 @@ def LoadDeck(Deck):
     Deck[Count].Suit = int(LineFromFile)
     LineFromFile = CurrentFile.readline()
     Deck[Count].Rank = int(LineFromFile)
+    if Ace == 'high' and Deck[Count].Rank == 1:
+      Deck[Count].Rank = 14
     Count = Count + 1
  
 def ShuffleDeck(Deck):
@@ -208,14 +222,13 @@ def DisplayRecentScores(RecentScores):
     print("{0:<10} {1:<10} {2:<10} ".format (RecentScores[Count].Name, RecentScores[Count].Score, RecentScores[Count].Date))
   print()
   print('Press the Enter key to return to the main menu')
-  
   input()
   print()
 
 def UpdateRecentScores(RecentScores, Score):
   PlayerName = GetPlayerName()
   Date = datetime.date.today()
-  Date = datetime.datetime.strftime(Date,"%d,%m,%y")
+  Date = datetime.datetime.strftime(Date,"%d/%m/%y")
   FoundSpace = False
   Count = 1
   while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
@@ -265,16 +278,20 @@ def DisplayOptions():
   print()
   print("1. Set Ace rank")
   print()
-def GetOptionsChoice():
+def GetOptionChoice():
    valid = False
    while not valid:
      OptionsChoice = int(input())
-     valid = True
+     if OptionsChoice == 1:
+       valid = True
      else:
        print('please input a valid option')
        print()
-    return OptionsChoice
-def SetOptions(OptionChoice):
+   return OptionsChoice
+  
+def SetOption(OptionChoice):
+  if OptionChoice == 1:
+    SetAceHighOrLow()
 
 def SetAceHighOrLow():
     global Ace
@@ -282,15 +299,36 @@ def SetAceHighOrLow():
     while not finished:
         Choice = input("would you like the Ace to be high or low?").lower()
         Choice = Choice[0]
-        if Choice = "h":
-             Ace = "high"
-             finished = True
-        elif Choice = "l":
-             Ace = "low"
-             finished = True
+        if Choice == "h":
+          Ace = "high"
+          finished = True
+        elif Choice == "l":
+          Ace = "Low"
+          finished = True
         else:
              print("please input a valid answer")
-    
+def BubbleSortScores(RecentScores):
+  SwapMade = True
+  ListLength = len(RecentScores)
+  while SwapMade:
+   ListLength = ListLength - 1
+   SwapMade = False
+   for count in range(1, ListLength):
+     if RecentScores[count+1].Score < RecentScores[count].Score:
+       temp = RecentScores[count]
+       RecentScores[count+1] = RecentScores[count]
+       RecentScores[count] = temp
+       SwapMade = True
+       return RecentScores
+
+def SaveScore(RecentScores):
+  with open("Save_Scores.txt",mode = "wb", encoding="utf-8") as My_File:
+    pickle.dump(RecentScores, My_File)
+
+def LoadScores():
+  with open("Save_Scores.txt",mode = "rb") as My_File:
+    RecentScores = pickle.load(My_File)
+
 if __name__ == '__main__':
   for Count in range(1, 53):
     Deck.append(TCard())
@@ -308,11 +346,18 @@ if __name__ == '__main__':
       LoadDeck(Deck)
       PlayGame(Deck, RecentScores)
     elif Choice == '3':
+      BubbleSortScores(RecentScores)
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
     elif Choice == "5":
       DisplayOptions()
-      GetOptionChoice()
-      SetOptions(OptionChoice)
-      SetAceHighOrLow()
+      OptionChoice = GetOptionChoice()
+      SetOption(OptionChoice)
+    elif Choice == "6":
+      SaveScores(RecentScores)
+    elif Choice == "7":
+      SaveScores(RecentScores)
+    elif Choice == "q":
+      quit
+      
