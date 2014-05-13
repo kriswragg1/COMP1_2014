@@ -8,9 +8,8 @@
 #hello
 import datetime
 import random
-import pickle
 
-NO_OF_RECENT_SCORES = 3
+NO_OF_RECENT_SCORES = 10
 
 class TCard():
   def __init__(self):
@@ -22,7 +21,7 @@ class TRecentScore():
     self.Name = ''
     self.Score = 0
     self.Date = " "
-
+Ace = "low"
 Deck = [None]
 RecentScores = [None]
 Choice = ''
@@ -79,6 +78,7 @@ def DisplayMenu():
   print('4. Reset recent scores')
   print('5. options')
   print('6. Save scores')
+  print('7. Load Scores')
   print()
 
 
@@ -105,8 +105,6 @@ def GetMenuChoice():
     elif Choice == "6":
       valid = True
     elif Choice == "7":
-      valid = True
-    elif Choice == "8":
       valid = True
     else:
         "please enter a valid choice"
@@ -240,7 +238,7 @@ def UpdateRecentScores(RecentScores, Score):
     for Count in range(1, NO_OF_RECENT_SCORES):
       RecentScores[Count].Name = RecentScores[Count + 1].Name
       RecentScores[Count].Score = RecentScores[Count + 1].Score
-      RecentScores[Count].Date = RecentScors[Count + 1].Date
+      RecentScores[Count].Date = RecentScores[Count + 1].Date
     Count = NO_OF_RECENT_SCORES
   RecentScores[Count].Name = PlayerName
   RecentScores[Count].Score = Score
@@ -277,12 +275,15 @@ def PlayGame(Deck, RecentScores):
 def DisplayOptions():
   print()
   print("1. Set Ace rank")
+  print("2. Card of same score ends game")
   print()
 def GetOptionChoice():
    valid = False
    while not valid:
      OptionsChoice = int(input())
      if OptionsChoice == 1:
+       valid = True
+     elif OptionsChoice == 2:
        valid = True
      else:
        print('please input a valid option')
@@ -292,6 +293,10 @@ def GetOptionChoice():
 def SetOption(OptionChoice):
   if OptionChoice == 1:
     SetAceHighOrLow()
+  elif OptionChoice == 2:
+    SameCard()
+def SameCard():
+  
 
 def SetAceHighOrLow():
     global Ace
@@ -321,13 +326,28 @@ def BubbleSortScores(RecentScores):
        SwapMade = True
        return RecentScores
 
-def SaveScore(RecentScores):
-  with open("Save_Scores.txt",mode = "wb", encoding="utf-8") as My_File:
-    pickle.dump(RecentScores, My_File)
-
+def SaveScores(RecentScores):
+  with open("Save_Scores.txt",mode = "w", encoding="utf-8") as My_File:
+    for count in range (1,len(RecentScores)):
+      My_File.write("{0}\n".format(RecentScores[count].Name))
+      My_File.write("{0}\n".format(RecentScores[count].Score))
+      My_File.write("{0}\n".format(RecentScores[count].date))
+  print()
+  print("Save File Created")
+  
 def LoadScores():
-  with open("Save_Scores.txt",mode = "rb") as My_File:
-    RecentScores = pickle.load(My_File)
+  global RecentScores
+  List = []
+  with open("Save_Scores.txt",mode = "r") as My_File:
+    for line in My_File:
+      List.append(line)
+  counter = 1
+  for count in range (0,len(List),3):
+    RecentScores[counter].Name= List[count].rstrip("\n")
+    RecentScores[counter].Score= List[count+1].rstrip("\n")
+    RecentScores[counter].Date= List[count+2].rstrip("\n")
+    counter +=1  
+      
 
 if __name__ == '__main__':
   for Count in range(1, 53):
@@ -357,7 +377,10 @@ if __name__ == '__main__':
     elif Choice == "6":
       SaveScores(RecentScores)
     elif Choice == "7":
-      SaveScores(RecentScores)
+      try:
+        LoadScores()
+      except IOError:
+        print("There are no saved files")
     elif Choice == "q":
       quit
       
