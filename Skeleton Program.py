@@ -10,7 +10,7 @@ import datetime
 import random
 
 NO_OF_RECENT_SCORES = 10
-
+SameCardEnds = False
 class TCard():
   def __init__(self):
     self.Suit = 0
@@ -263,6 +263,8 @@ def PlayGame(Deck, RecentScores):
       DisplayCorrectGuessMessage(NoOfCardsTurnedOver - 1)
       LastCard.Rank = NextCard.Rank
       LastCard.Suit = NextCard.Suit
+    elif SameCardEnds == True and LastCard == NextCard:
+      GameOver = True
     else:
       GameOver = True
   if GameOver:
@@ -296,8 +298,21 @@ def SetOption(OptionChoice):
   elif OptionChoice == 2:
     SameCard()
 def SameCard():
-  
-
+  Valid = False
+  while not Valid:
+    Choice = input("would you like cards of the same score to end the game? ")
+    Choice = []
+    if Choice == "y":
+      print("cards of the same score will end the game")
+      SameCardEnds = True
+      valid = True
+    elif Choice == "n":
+      print("cards of the same score will not end the game")
+      SameCardEnds = False
+      valid == True
+    else:
+      print("please enter a valid choice")
+  return SameCardEnds
 def SetAceHighOrLow():
     global Ace
     finished = False
